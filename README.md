@@ -156,14 +156,22 @@ cd fundraiseup-test
 ```sh
 npm install
 ```
+4. Create a `.env` file in the root directory of the project and add the following environment variables:
+```sh 
+echo "DB_URI=<your-db-url>" > .env
+````
 
 ### 🤖 Using app
 
 ```sh
-npm run app
-npm run sync
-#or
-npm run sync-full-reindex
+ts-node src/app.ts
+```
+```sh
+ts-node src/sync.ts
+```
+or
+```sh
+ts-node src/sync.ts --full-reindex
 ```
 
 ---
