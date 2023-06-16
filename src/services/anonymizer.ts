@@ -13,12 +13,15 @@ export class Anonymizer {
 
   private customerIds: Set<string> = new Set();
   private db: Db;
+
   private queue: Queue;
+  private fullReindex: boolean;
   public async init() {
     this.db = await MongoConnection.get();
     this.queue = new Queue(this.db);
     this.timeOut = 1e3;
     this.lastUpdateTime = Date.now();
+    this.fullReindex = process.argv.slice(2).includes('--full-reindex');
   }
 
   public run() {
@@ -41,6 +44,7 @@ export class Anonymizer {
 
     if (!customerIds.length) {
       console.log('No customers to anonymize');
+      if (this.fullReindex) process.exit(0);
       return;
     }
 
