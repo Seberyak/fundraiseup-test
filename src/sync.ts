@@ -6,8 +6,9 @@ config();
 const main = async () => {
   await MongoConnection.connect();
   const anonymizer = new Anonymizer();
+
   await anonymizer.init();
-  anonymizer.run(100);
+  anonymizer.run();
 };
 
 main().then();

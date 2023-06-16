@@ -5,8 +5,11 @@ import { Customer } from '../models/customer';
 import { Queue } from './queue';
 
 export class Anonymizer {
-  private readonly timeOut = 1e3;
-  private lastUpdateTime = Date.now();
+  /**
+   * Timeout, after which the batch will be resolved
+   **/
+  private timeOut: number;
+  private lastUpdateTime: number;
 
   private customerIds: Set<string> = new Set();
   private db: Db;
@@ -14,12 +17,14 @@ export class Anonymizer {
   public async init() {
     this.db = await MongoConnection.get();
     this.queue = new Queue(this.db);
+    this.timeOut = 1e3;
+    this.lastUpdateTime = Date.now();
   }
 
-  public run(ms: number) {
+  public run() {
     setInterval(() => {
       this.batchResolver().then();
-    }, ms);
+    }, 100);
   }
 
   private async batchResolver() {

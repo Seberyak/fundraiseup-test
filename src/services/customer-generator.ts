@@ -11,8 +11,8 @@ export class CustomerGenerator {
     this.db = await MongoConnection.get();
     this.queue = new Queue(this.db);
   }
-  async generate(): Promise<void> {
-    await MongoConnection.save(new Customer(), 'customers');
+  async generate(): Promise<ObjectId> {
+    return MongoConnection.save(new Customer(), Customer.collection);
   }
 
   async generateMultiple(): Promise<ObjectId[]> {

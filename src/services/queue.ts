@@ -3,7 +3,10 @@ import { QueueRecord } from '../models/queue-record';
 import { MongoConnection } from '../helpers/mongo-connection';
 
 export class Queue {
-  constructor(private readonly db: Db, private readonly channel = 'default') {}
+  constructor(
+    private readonly db: Db,
+    private readonly channel = 'default-queue'
+  ) {}
   public async addToQueue<T>(messages: T[]) {
     const arr = messages.map((message) => new QueueRecord(message));
     await MongoConnection.saveMany(arr, this.channel);
